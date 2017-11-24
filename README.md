@@ -477,3 +477,30 @@ TODO
 * Account for scheduled maintenance (and provide two QoS calculations: with and without scheduled maintenance)
 * Allow for JavaScript execution in the monitored resources by using a headless browser (probably zombie.js)
 * Unit tests
+
+UPDATE[20171124]
+----
+
+* 新增钉钉报警功能
+* 钉钉报警由python脚本实现
+
+搭建环境描述[20171124]
+----
+
+* OS: centos 7.2
+* Node: v6.11.3
+* MongoDB: 3.2.0
+* Uptime: 3.14
+
+
+TODO
+----
+
+* 新增重试功能
+* 重构
+
+
+Notice
+----
+
+* config配置的时候要特别注意mongo连接的connectionString字段

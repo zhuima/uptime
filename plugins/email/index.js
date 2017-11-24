@@ -49,40 +49,31 @@
  *       to:       'bar@blurdybloop.com, baz@blurdybloop.com'
  *     # The email plugin also uses the main `url` param for hyperlinks in the sent emails
  */
-var fs         = require('fs');
-var nodemailer = require('nodemailer');
-var moment     = require('moment');
 var CheckEvent = require('../../models/checkEvent');
-var ejs        = require('ejs');
+var exec = require('child_process').exec;
 
 exports.initWebApp = function(options) {
-  var config = options.config.email;
-  var mailer = nodemailer.createTransport(config.method, config.transport);
-  var templateDir = __dirname + '/views/';
   CheckEvent.on('afterInsert', function(checkEvent) {
-    if (!config.event[checkEvent.message]) return;
     checkEvent.findCheck(function(err, check) {
       if (err) return console.error(err);
-      var filename = templateDir + checkEvent.message + '.ejs';
-      var renderOptions = {
-        check: check,
-        checkEvent: checkEvent,
-        url: options.config.url,
-        moment: moment,
-        filename: filename
+      var uptime_details = options.config.url + '/dashboard/checks/' + check._id;
+      if (checkEvent.details) {
+        var uptime_code_status = checkEvent.details;
+        var _uptime_code_status = uptime_code_status.replace(/\s/g, '_');
+      } else {
+        var _uptime_code_status = "HTTP_status_200";
       };
-      var lines = ejs.render(fs.readFileSync(filename, 'utf8'), renderOptions).split('\n');
-      var mailOptions = {
-        from:    config.message.from,
-        to:      config.message.to,
-        subject: lines.shift(),
-        text:    lines.join('\n')
-      };
-      mailer.sendMail(mailOptions, function(err2, response) {
-        if (err2) return console.error('Email plugin error: %s', err2);
-        console.log('Notified event by email: Check ' + check.name + ' ' + checkEvent.message);
-      });
+      var python_script = __dirname + '/dingding_alert.py';
+      var command = 'python ' + python_script + ' '  + check.name  + ' ' + checkEvent.message + ' '  + check.url + ' ' + _uptime_code_status  + ' ' + uptime_details;
+      exec(command, function(err, stdout, stderr){
+      if(err){
+          console.log("这是错误输出" + err);
+        }
+      console.log("这是正确输出" + stdout);
+      //console.log(typeof(checkEvent.details));
+      //console.log('zhuima: Check ' + check.name + ' ' + checkEvent.message + ' ' + check.url + ' ' + options.config.url);
     });
   });
   console.log('Enabled Email notifications');
+});
 };

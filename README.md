@@ -504,3 +504,11 @@ Notice
 ----
 
 * config配置的时候要特别注意mongo连接的connectionString字段
+
+
+UPDATE[20171124]
+----
+
+* 新增Dockerfile, docker-compose.yml文件
+* 为了省事，做到了一个镜像里面，后续有需求可以拆分
+* 使用的时候一定要注意修改钉钉相关信息和mongoDB数据库的账号密码相关

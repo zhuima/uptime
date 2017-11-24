@@ -1,0 +1,18 @@
+version: '2'
+services:
+  zhuima_test_uptime_centos7:
+    image: uptime:v1
+    container_name: zhuima_test_uptime
+    restart: always
+    networks:
+      - harbor_uptime
+    ports:
+      - "10086:8082"
+
+networks:
+  harbor_uptime:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 10.50.10.0/24
+        gateway: 10.50.10.1

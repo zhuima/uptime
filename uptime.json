@@ -1,0 +1,13 @@
+// First application
+{
+  name      : 'UPTIME',
+  script    : 'app.js',
+  instances  : 4,
+  exec_mode  : "cluster_mode",
+  env: {
+    COMMON_VARIABLE: 'true'
+  },
+  env_production : {
+    NODE_ENV: 'production'
+  }
+}

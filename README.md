@@ -512,3 +512,17 @@ UPDATE[20171124]
 * 新增Dockerfile, docker-compose.yml文件
 * 为了省事，做到了一个镜像里面，后续有需求可以拆分
 * 使用的时候一定要注意修改钉钉相关信息和mongoDB数据库的账号密码相关
+
+
+
+UPDATE[20171127]
+---
+
+* 新增pm2管理功能
+* pm2 start uptime.json 
+
+
+UPDATE[20171128]
+---
+
+* 新增批量导入脚本
